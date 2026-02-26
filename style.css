@@ -1,33 +1,218 @@
+/* 全局样式重置 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
-  background: #111;
-  color: white;
-  font-family: Arial;
+  font-family: "Microsoft Yahei", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  scroll-behavior: smooth; /* 全局平滑滚动 */
 }
+
+/* 容器样式 */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem 1rem;
 }
+
+/* 标题样式 */
 h1 {
   text-align: center;
-  margin: 20px 0;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
 }
+
+/* 壁纸网格布局 */
 .wallpaper-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
-.item img {
-  width: 100%;
+
+/* 单个壁纸项样式 */
+.item {
+  background-color: white;
   border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; /* 为子元素绝对定位做准备 */
+  cursor: pointer; /* 鼠标指针变为手型，提示可点击 */
 }
-.item img:hover {
-  transform: scale(1.03);
+
+/* 鼠标悬浮效果 */
+.item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 壁纸图片样式 + 加载动画 */
+.wallpaper-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  opacity: 0; /* 初始透明 */
+  transition: opacity 0.5s ease; /* 淡入过渡 */
+}
+
+/* 图片加载完成后显示 */
+.wallpaper-img.loaded {
+  opacity: 1;
+}
+
+/* 壁纸项控制按钮（收藏/下载） */
+.item-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  opacity: 0; /* 默认隐藏，hover时显示 */
+  transition: opacity 0.3s ease;
+}
+
+.item:hover .item-controls {
+  opacity: 1;
+}
+
+/* 通用按钮样式 */
+.btn {
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+/* 收藏按钮激活状态 */
+.favorite-btn.active i {
+  color: #e74c3c; /* 红色心形 */
+}
+
+/* 大图预览模态层 */
+.preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.9);
+  display: none; /* 默认隐藏 */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem 1rem;
+}
+
+/* 预览层显示状态 */
+.preview-modal.show {
+  display: flex;
+}
+
+/* 关闭按钮 */
+.close-modal {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.close-modal:hover {
+  transform: scale(1.1);
+}
+
+/* 预览图片容器 */
+.preview-content {
+  max-width: 90%;
+  max-height: 80vh;
+}
+
+/* 预览图片样式 */
+#previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 完整显示图片，不裁剪 */
+  border-radius: 4px;
+}
+
+/* 预览层下载按钮 */
+.preview-download-btn {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.preview-download-btn:hover {
+  background: #2980b9;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .wallpaper-grid {
+    gap: 1rem;
+  }
+  
+  .item img {
+    height: 180px;
+  }
+
+  .close-modal {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .preview-download-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }

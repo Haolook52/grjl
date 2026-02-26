@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>我的壁纸网站</title>
   <link rel="stylesheet" href="style.css">
+  <!-- 引入Font Awesome图标（用于收藏、关闭、下载） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   <div class="container">
@@ -12,20 +14,43 @@
       
       <!-- 壁纸1 -->
       <div class="item">
-        <img src="images/1.jpg" alt="壁纸1">
+        <img src="images/1.jpg" alt="壁纸1" class="wallpaper-img" data-src="images/1.jpg">
+        <div class="item-controls">
+          <button class="btn favorite-btn"><i class="fa fa-heart-o"></i></button>
+          <button class="btn download-btn"><i class="fa fa-download"></i></button>
+        </div>
       </div>
 
       <!-- 壁纸2 -->
       <div class="item">
-        <img src="images/2.jpg" alt="壁纸2">
+        <img src="images/2.jpg" alt="壁纸2" class="wallpaper-img" data-src="images/2.jpg">
+        <div class="item-controls">
+          <button class="btn favorite-btn"><i class="fa fa-heart-o"></i></button>
+          <button class="btn download-btn"><i class="fa fa-download"></i></button>
+        </div>
       </div>
 
       <!-- 壁纸3 -->
       <div class="item">
-        <img src="images/3.jpg" alt="壁纸3">
+        <img src="images/3.jpg" alt="壁纸3" class="wallpaper-img" data-src="images/3.jpg">
+        <div class="item-controls">
+          <button class="btn favorite-btn"><i class="fa fa-heart-o"></i></button>
+          <button class="btn download-btn"><i class="fa fa-download"></i></button>
+        </div>
       </div>
 
     </div>
   </div>
+
+  <!-- 大图预览层（默认隐藏） -->
+  <div class="preview-modal" id="previewModal">
+    <button class="close-modal"><i class="fa fa-times"></i></button>
+    <div class="preview-content">
+      <img src="" alt="壁纸预览" id="previewImg">
+    </div>
+    <button class="preview-download-btn"><i class="fa fa-download"></i> 下载原图</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
