@@ -1,0 +1,755 @@
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>杨亚南的个人简历</title>
+<style>
+/* 全局基础：保证所有设备统一渲染 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-text-size-adjust: 100%; /* 禁止手机自动放大文字 */
+  scroll-behavior: smooth; /* 平滑滚动 */
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* 禁止横向滚动条 */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 15px;
+  color: #333;
+  line-height: 1.7;
+  background: #f5f7fa;
+}
+
+/* 主题色变量 */
+:root {
+  --primary: #2c5282;
+  --secondary: #718096;
+  --accent: #3182ce;
+  --border: #e2e8f0;
+  --card: #ffffff;
+  --avatar-shadow: rgba(49, 130, 206, 0.2); /* 头像专属阴影色 */
+  --hover-bg: #f8fafc;
+}
+
+/* 回到顶部按钮 */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(49, 130, 206, 0.3);
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 100;
+  /* 新增：按钮出现动画 */
+  animation: pulse 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  animation-play-state: running;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.4);
+}
+
+/* 头部卡片 */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 30px 24px; /* 增加上下内边距，给头像更多呼吸空间 */
+  background: var(--card);
+  border-radius: 16px; /* 增大圆角更柔和 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+  /* 新增：更细腻的入场动画 */
+  animation: fadeInUp 0.8s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 头部背景装饰 - 新增流动光效 */
+.header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f8fb 100%);
+  border-radius: 16px 16px 0 0;
+  z-index: 1;
+  /* 新增：背景渐变动画 */
+  background-size: 200% 200%;
+  animation: gradientFlow 8s ease infinite;
+}
+
+/* 头像容器 - 新增外层容器实现更丰富效果 */
+.avatar-container {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 120px; /* 增大头像尺寸更醒目 */
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* 多层边框+阴影打造精致感 */
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 0 2px var(--border), 0 4px 12px var(--avatar-shadow);
+  /* 头像过渡效果 */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* 头像加载失败时的样式优化 */
+  background-color: #f0f4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem; /* 增大默认文字 */
+  color: var(--accent);
+  font-weight: 600;
+  /* 新增：头像旋转入场动画 */
+  animation: avatarRotate 1s ease forwards;
+  opacity: 0;
+  transform: scale(0.8) rotate(-10deg);
+}
+
+/* 头像悬浮效果 - 增强 */
+.avatar:hover {
+  transform: scale(1.08) rotate(2deg);
+  box-shadow: 0 0 0 2px var(--border), 0 8px 20px rgba(49, 130, 206, 0.4);
+}
+
+/* 头像图片加载失败时显示文字 */
+.avatar:after {
+  content: "杨";
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.4rem); /* 自动适配大小 */
+  color: var(--primary);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+  /* 新增：文字渐显动画 */
+  animation: textReveal 1s ease 0.3s forwards;
+  opacity: 0;
+}
+
+.contact {
+  color: var(--secondary);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 2;
+  /* 新增：联系方式渐显动画 */
+  animation: textReveal 1s ease 0.5s forwards;
+  opacity: 0;
+}
+
+/* 联系方式点击交互 */
+.contact span {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.contact span:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* 新增：联系方式下划线动画 */
+.contact span::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.contact span:hover::after {
+  width: 100%;
+}
+
+/* 内容卡片 */
+.section {
+  background: var(--card);
+  padding: clamp(20px, 4vw, 30px);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  /* 添加轻微的悬浮效果 */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* 新增：卡片入场动画 */
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  animation: sectionFadeIn 0.7s ease forwards;
+}
+
+/* 逐个延迟动画 - 调整延迟时间更自然 */
+.section:nth-child(1) { animation-delay: 0.2s; }
+.section:nth-child(2) { animation-delay: 0.4s; }
+.section:nth-child(3) { animation-delay: 0.6s; }
+.section:nth-child(4) { animation-delay: 0.8s; }
+.section:nth-child(5) { animation-delay: 1.0s; }
+
+.section:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+h2 {
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  color: var(--primary);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+  position: relative;
+  margin-bottom: 18px;
+  /* 新增：标题下划线动画 */
+  transition: all 0.3s ease;
+}
+
+h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 50px; height: 2px;
+  background: var(--accent);
+  /* 新增：标题下划线扩展动画 */
+  transition: width 0.5s ease;
+}
+
+h2:hover::after {
+  width: 100px;
+}
+
+/* 条目布局 */
+.item {
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+  /* 新增：条目渐显动画 */
+  animation: itemFadeIn 0.8s ease forwards;
+  opacity: 0;
+}
+
+/* 条目逐个动画 */
+.item:nth-child(1) { animation-delay: 0.1s; }
+.item:nth-child(2) { animation-delay: 0.2s; }
+.item:nth-child(3) { animation-delay: 0.3s; }
+
+.item:hover {
+  background: var(--hover-bg);
+  transform: translateX(5px);
+}
+
+.item-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.item-title {
+  font-weight: 600;
+  color: var(--primary);
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.item:hover .item-title {
+  color: var(--accent);
+}
+
+.item-time {
+  background: #f0f4f8;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--secondary);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.item:hover .item-time {
+  background: var(--accent);
+  color: white;
+}
+
+.item-desc {
+  color: #4a5568;
+  padding-left: 12px;
+  border-left: 3px solid #e8f4f8;
+  transition: all 0.3s ease;
+}
+
+.item:hover .item-desc {
+  border-left-color: var(--accent);
+  padding-left: 18px;
+}
+
+ul {
+  list-style: none;
+}
+li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+li:hover {
+  color: var(--primary);
+  transform: translateX(3px);
+}
+
+li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  transition: all 0.3s ease;
+}
+
+li:hover::before {
+  transform: scale(1.5);
+  color: var(--primary);
+}
+
+/* 技能标签 */
+.skill-tag {
+  display: inline-block;
+  background: #e8f4f8;
+  color: var(--primary);
+  padding: 5px 12px;
+  border-radius: 16px;
+  margin: 0 6px 6px 0;
+  font-size: 0.9rem;
+  /* 标签交互效果 */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* 新增：标签入场动画 */
+  animation: tagPop 0.6s ease forwards;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+/* 技能标签逐个动画 */
+.skill-tag:nth-child(1) { animation-delay: 0.1s; }
+.skill-tag:nth-child(2) { animation-delay: 0.2s; }
+.skill-tag:nth-child(3) { animation-delay: 0.3s; }
+.skill-tag:nth-child(4) { animation-delay: 0.4s; }
+.skill-tag:nth-child(5) { animation-delay: 0.5s; }
+.skill-tag:nth-child(6) { animation-delay: 0.6s; }
+.skill-tag:nth-child(7) { animation-delay: 0.7s; }
+.skill-tag:nth-child(8) { animation-delay: 0.8s; }
+
+.skill-tag::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.skill-tag:hover {
+  background-color: var(--accent);
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+}
+
+.skill-tag:hover::after {
+  left: 100%;
+}
+
+/* 高亮HR相关内容 */
+.hr-highlight {
+  color: var(--accent);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.hr-highlight:hover {
+  text-shadow: 0 0 10px rgba(49, 130, 206, 0.4);
+  transform: scale(1.02);
+}
+
+/* 新增：高亮文字发光动画 */
+.hr-highlight::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.hr-highlight:hover::after {
+  transform: scaleX(1);
+}
+
+/* 打印样式优化 */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+  .back-to-top {
+    display: none;
+  }
+  .header, .section {
+    box-shadow: none;
+    border: none;
+    margin-bottom: 15px;
+    padding: 15px 0;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .header::before {
+    display: none; /* 打印时隐藏背景渐变 */
+  }
+  .avatar {
+    box-shadow: none;
+    border: 3px solid var(--border);
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .avatar:hover {
+    transform: none;
+  }
+  .section:hover {
+    transform: none;
+  }
+  .skill-tag {
+    border: 1px solid #e8f4f8;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 480px) {
+  .avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
+  }
+  .contact {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .item-desc {
+    padding-left: 8px;
+  }
+  li {
+    padding-left: 14px;
+  }
+  .back-to-top {
+    width: 40px;
+    height: 40px;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* 动画定义 - 新增多个精致动画 */
+@keyframes fadeInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes avatarRotate {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes itemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tagPop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <!-- 新增头像容器，实现更丰富的视觉效果 -->
+  <div class="avatar-container">
+    <img src="Mango.jpg" class="avatar" alt="杨亚南头像"> <!-- 替换为你的真实头像路径 -->
+  </div>
+  <h1>杨亚南</h1>
+  <p class="contact">
+    <span>📌 求职意向：人力资源专员/HR</span>
+    <span>📞 电话：16678666652</span>
+    <span>✉️ 邮箱：yyn@haolook.com</span> <!-- 替换为你的真实邮箱 -->
+  </p>
+</div>
+
+<!-- 个人简介 -->
+<div id="intro" class="section">
+  <h2>个人简介</h2>
+  <div class="item-desc">
+    <p>具备<span class="hr-highlight">人力资源管理专业证书（初/中级经济师）</span>，拥有多场景的人员管理、制度执行、沟通协调实战经验。旅游管理+法学双学历背景，逻辑思维清晰，做事认真细致、责任心强、执行力突出。过往安全检查、运营管理经历，锻炼了<span class="hr-highlight">规则意识、台账管理、人员核验及现场沟通能力</span>，可快速适配HR岗位的考勤管理、员工关系、新员工培训等核心工作。</p>
+  </div>
+</div>
+
+<!-- 工作经历 -->
+<div id="experience" class="section">
+  <h2>工作经历</h2>
+  <div class="item">
+    <div class="item-header">
+      <span class="item-title">民航安全检查员 | 广州白云机场</span>
+      <span class="item-time">2017.07 - 2020.01</span>
+    </div>
+    <div class="item-desc">
+      <ul>
+        <li>严格执行民航安全检查规范，锻炼<span class="hr-highlight">制度落地执行能力</span>和原则性</li>
+        <li>负责旅客人身/行李安检、违禁品排查，具备<span class="hr-highlight">细致的观察能力和风险把控意识</span></li>
+        <li>做好执勤登记、交接班等工作，养成<span class="hr-highlight">台账记录和流程化工作习惯</span></li>
+        <li>现场沟通处置各类安检问题，提升<span class="hr-highlight">高效沟通和应急协调能力</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="item">
+    <div class="item-header">
+      <span class="item-title">自由职业</span>
+      <span class="item-time">2020.01 - 2022.09</span>
+    </div>
+    <div class="item-desc">
+      <ul>
+        <li>因疫情原因在家学习<span class="hr-highlight">人力资源和工商管理方向证书</span></li>
+        <li>协助家人处理工作上各项事宜，提升<span class="hr-highlight">问题解决和自主工作能力</span></li>
+        <li>对接工作上客户需求并妥善处理，强化<span class="hr-highlight">客户沟通和服务意识</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="item">
+    <div class="item-header">
+      <span class="item-title">安全检查员 | 海恒物业管理股份有限公司</span>
+      <span class="item-time">2022.9 - 至今</span>
+    </div>
+    <div class="item-desc">
+      <ul>
+        <li>负责机务维修人员通道安检、门禁管理、人员核验，强化<span class="hr-highlight">人员信息管理能力</span></li>
+        <li>做好人员进出登记、台账记录，具备<span class="hr-highlight">考勤类数据管理的基础能力</span></li>
+        <li>维护区域安全秩序，体现<span class="hr-highlight">责任心和规则执行能力</span></li>
+        <li>严格落实交接班制度，保证工作连续性，契合HR岗位<span class="hr-highlight">流程化、标准化工作要求</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 教育背景 -->
+<div id="education" class="section">
+  <h2>教育背景</h2>
+  <div class="item">
+    <div class="item-header">
+      <span class="item-title">旅游管理 | 潍坊工程职业学院</span>
+      <span class="item-time">2015.09 - 2018.06</span>
+    </div>
+    <div class="item-desc">
+      <p>全日制专科 | 主修服务管理、沟通技巧等课程，夯实HR岗位所需的沟通协调基础</p>
+    </div>
+  </div>
+  <div class="item">
+    <div class="item-header">
+      <span class="item-title">法学 | 中国海洋大学</span>
+      <span class="item-time">2022.09 - 2024.06</span>
+    </div>
+    <div class="item-desc">
+      <p>函授本科 | 学习劳动法规相关知识，为HR岗位员工关系处理提供法律基础</p>
+    </div>
+  </div>
+</div>
+
+<!-- 专业技能 -->
+<div id="skills" class="section">
+  <h2>专业技能</h2>
+  <div class="item-desc">
+    <span class="skill-tag">员工考勤管理</span>
+    <span class="skill-tag">员工关系处理</span>
+    <span class="skill-tag">新员工业务培训</span>
+    <span class="skill-tag">Excel数据处理</span>
+    <span class="skill-tag">劳动法规基础</span>
+    <span class="skill-tag">制度执行与监督</span>
+    <span class="skill-tag">高效沟通协调</span>
+    <span class="skill-tag">台账记录管理</span>
+  </div>
+</div>
+
+<!-- 证书与荣誉 -->
+<div id="certificates" class="section">
+  <h2>证书与荣誉</h2>
+  <div class="item-desc">
+    <ul>
+      <li><span class="hr-highlight">初级经济师（人力资源管理方向）</span> - 核心HR专业证书</li>
+      <li>中级经济师（工商管理方向） - 强化管理思维和商业认知</li>
+      <li>民航安全检查员（中级） - 体现规则意识和执行能力</li>
+      <li>消防设施操作员（初级） - 安全意识和应急处理能力</li>
+      <li><span class="hr-highlight">会计专业技术资格（初级）</span> - 提升HR薪酬核算基础能力</li>
+      <li>C1机动车驾驶证 - 具备外勤事务处理能力</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 回到顶部按钮 -->
+<div class="back-to-top" id="backToTop">↑</div>
+
+<script>
+// 回到顶部按钮
+const backToTopBtn = document.getElementById('backToTop');
+
+window.addEventListener('scroll', function() {
+  // 滚动超过300px显示回到顶部按钮
+  if (window.scrollY > 300) {
+    backToTopBtn.classList.add('show');
+  } else {
+    backToTopBtn.classList.remove('show');
+  }
+});
+
+// 回到顶部按钮点击事件
+backToTopBtn.addEventListener('click', function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+// 联系方式复制功能
+document.querySelectorAll('.contact span').forEach(span => {
+  span.addEventListener('click', function() {
+    // 提取纯文本内容（去除emoji）
+    const text = this.textContent.replace(/[📌📞✉️]/g, '').trim();
+    
+    // 创建临时输入框复制文本
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    
+    // 提示复制成功
+    const originalText = this.textContent;
+    this.textContent = "✅ 复制成功";
+    setTimeout(() => {
+      this.textContent = originalText;
+    }, 1500);
+  });
+});
+</script>
+</body>
+</html>
